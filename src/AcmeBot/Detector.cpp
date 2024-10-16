@@ -4,7 +4,7 @@
  * @brief Constructor for Detector class
  * 
  */
-Detector::Detector() {
+acmebot::Detector::Detector() {
 
 }
 
@@ -12,7 +12,7 @@ Detector::Detector() {
  * @brief Destructor for Detector class
  * 
  */
-Detector::~Detector() {
+acmebot::Detector::~Detector() {
 
 }
 
@@ -20,13 +20,13 @@ Detector::~Detector() {
  * @brief Captures frames from real-time camera feed or series of images
  * 
  */
-void Detector::cameraCapture() {
+void acmebot::Detector::cameraCapture() {
 
 }
  /**
   * @brief Performs detection and outputs bounding box
   * 
   */
-void Detector::Process() {
+void acmebot::Detector::Process() {
 
 }

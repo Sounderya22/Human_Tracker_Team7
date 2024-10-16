@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(Human_Tracker_Team7)
+project(Human_Tracker)
 
 #
 # GoogleTest Setup
@@ -98,15 +98,13 @@ endif()
 # ref: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
 #
 add_subdirectory(src)
-add_subdirectory(app)
 add_subdirectory(test)
 
 # create a target to build documentation
 doxygen_add_docs(docs           # target name
   # List of files or directories
-  ${PROJECT_SOURCE_DIR}/app
-  ${PROJECT_SOURCE_DIR}/libs
-  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_SOURCE_DIR}/src
+  ${PROJECT_SOURCE_DIR}/src/include
   )
 
 # create targets for building code coverage reports
@@ -118,7 +116,7 @@ if(WANT_COVERAGE)
                                  #   '|| true' --> continue coverage even if ctest failed
     EXECUTABLE ctest --output-on-failure   # what to run inside the build directory?
     EXCLUDE
-      "app/main.cpp"     # Unit test does not run app, so don't analyze it
+      "src/main.cpp"     # Unit test does not run app, so don't analyze it
       "*gtest*"          # Don't analyze googleTest code
       "/usr/include/*"   # Don't analyze system headers
     )
