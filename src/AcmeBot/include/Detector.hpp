@@ -29,7 +29,8 @@
         void Process();
 
     private: 
-        double mConfidenceThreshold{0.0}; // Prediction confidence
+        /* Prediction confidence*/
+        double mConfidenceThreshold{0.0}; 
         
 };
 }  //namespace
