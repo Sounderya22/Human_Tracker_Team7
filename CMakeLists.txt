@@ -7,11 +7,14 @@ project(Human_Tracker_Team7)
 #
 
 # GoogleTest requires at least C++14
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # declares a dependency on GoogleTest which is downloaded from GitHub
 include(FetchContent)
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+  cmake_policy(SET CMP0135 NEW)
+endif ()
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
@@ -23,6 +26,9 @@ FetchContent_MakeAvailable(googletest)
 # Enables testing for this directory and below
 enable_testing()
 include(GoogleTest)
+
+# For logging
+find_package(spdlog REQUIRED)
 
 #
 # Doxygen Support check if Doxygen is installed
@@ -108,9 +114,9 @@ if(WANT_COVERAGE)
   # unit test coverage:
   setup_target_for_coverage_lcov ( # use lcov to generate coverage report
     NAME test_coverage          # target name
-    #EXECUTABLE ctest || true    # what to run insdie the build directory?
+    #EXECUTABLE ctest || true    # what to run inside the build directory?
                                  #   '|| true' --> continue coverage even if ctest failed
-    EXECUTABLE ctest     # what to run insdie the build directory?
+    EXECUTABLE ctest --output-on-failure   # what to run inside the build directory?
     EXCLUDE
       "app/main.cpp"     # Unit test does not run app, so don't analyze it
       "*gtest*"          # Don't analyze googleTest code
@@ -121,7 +127,7 @@ if(WANT_COVERAGE)
   # Use gcovr insetad of lcov if you want to see branch coverage as well
   setup_target_for_coverage_gcovr_html ( # use gcovr to generate coverage report
     NAME app_coverage          # target name
-    EXECUTABLE shell-app       # what to run insdie the build directory?
+    EXECUTABLE human_tracker       # what to run inside the build directory?
     EXCLUDE
     "test/test.cpp"    # App does not run unit test, so don't analyze it
     "test/main.cpp"    # App does not run unit test, so don't analyze it
