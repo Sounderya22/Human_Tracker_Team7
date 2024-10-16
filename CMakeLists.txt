@@ -6,6 +6,9 @@ project(Human_Tracker)
 # ref: https://google.github.io/googletest/quickstart-cmake.html
 #
 
+find_package(OpenCV REQUIRED)
+find_package(Eigen3 REQUIRED)
+
 # GoogleTest requires at least C++14
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
