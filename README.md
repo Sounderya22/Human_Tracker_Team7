@@ -51,6 +51,7 @@ The proposal documentation for Phase 0 can be found [here](https://github.com/So
 
 OpenCV >= 4.5.0 is licensed under the Apache 2 License.
 <br> Eigen is MPL2-licensed.
+<br> Spdlog is MIT
 
 ## Build Instructions
 
