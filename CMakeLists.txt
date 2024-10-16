@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(scratch)
+project(Human_Tracker_Team7)
 
 #
 # GoogleTest Setup
@@ -91,7 +91,7 @@ endif()
 # ref: https://iamsorush.com/posts/cpp-cmake-essential/
 # ref: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
 #
-add_subdirectory(libs)
+add_subdirectory(src)
 add_subdirectory(app)
 add_subdirectory(test)
 
