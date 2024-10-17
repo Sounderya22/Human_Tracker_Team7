@@ -2,6 +2,7 @@
  * @file AcmeBot.hpp
  * @author  Sounderya
             Amogha Sunil
+            Anirudh Swarankar
  * @brief C++ header file for AcmeBOt Class
  * @version 0.1
  * @date 2024-10-16
