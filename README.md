@@ -18,7 +18,7 @@ We propose a Human Obstacle Detection and Tracking Module using YOLOv8, tailored
 
 ## Deliverables
 
-- A fully functional Humand Obstacle Detection and Tracking Module. 
+- A fully functional Human Obstacle Detection and Tracking Module. 
 - Overview of proposed work including timeline, risks and mitigation
 - UML and activity diagrams
 - Developer-level documentation
@@ -45,6 +45,10 @@ Class dependency diagram of the proposed design
 
 ## Proposal video
 [<img src="https://github.com/Sounderya22/Human_Tracker_Team7/blob/main/docs/quad_chart.jpeg" width="50%">](https://drive.google.com/file/d/1x_w5co_9UD8CQUA8fLLDc7qcsHzgK9t5/view?usp=sharing)
+
+## Backlog
+Product backlog sheet can be found [here](https://umd0-my.sharepoint.com/:x:/g/personal/aniswa_umd_edu/EestCJ8OoQ5Kma2gOCJLRu0B8-GHkAcc6Mof4minRu5YdA?e=6aKXpD)
+
 ## Proposal Documentation
 
 The proposal documentation for Phase 0 can be found [here](https://github.com/Sounderya22/Human_Tracker_Team7/blob/main/docs/Phase0_Proposal.pdf)
