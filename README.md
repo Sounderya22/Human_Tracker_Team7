@@ -43,6 +43,9 @@ Class dependency diagram of the proposed design
 
 ![image](https://github.com/Sounderya22/Human_Tracker_Team7/blob/main/docs/quad_chart.jpeg)
 
+## Propasal video
+![video](https://drive.google.com/file/d/1x_w5co_9UD8CQUA8fLLDc7qcsHzgK9t5/view?usp=sharing)
+
 ## Proposal Documentation
 
 The proposal documentation for Phase 0 can be found [here](https://github.com/Sounderya22/Human_Tracker_Team7/blob/main/docs/Phase0_Proposal.pdf)
