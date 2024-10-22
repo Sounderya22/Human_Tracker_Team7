@@ -1,5 +1,5 @@
 /**
- * @file AcmeBot.hpp
+ * @file acmebot.hpp
  * @author  Sounderya
             Amogha Sunil
             Anirudh Swarankar
@@ -14,7 +14,7 @@
 #ifndef _H_ACMEBOT_H_
 #define _H_ACMEBOT_H_
 
-#include "Tracker.hpp"
+#include "tracker.hpp"
 
 struct intrinsics{
     double focalLength{0.0};

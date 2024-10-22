@@ -9,7 +9,7 @@
  *
  */
 
-#include "AcmeBot.hpp"
+#include "acmebot.hpp"
 
 /**
  * @brief Constructs a new Acme Bot object

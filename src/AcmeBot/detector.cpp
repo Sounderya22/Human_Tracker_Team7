@@ -1,4 +1,4 @@
-#include "Detector.hpp" 
+#include "detector.hpp"
 
 /**
  * @brief Constructor for Detector class

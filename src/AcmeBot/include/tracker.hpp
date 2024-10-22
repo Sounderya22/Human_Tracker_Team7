@@ -1,6 +1,6 @@
 
 /**
- * @file Tracker.hpp
+ * @file tracker.hpp
  * @author  Sounderya
             Amogha Sunil
  * @brief C++ header file for AcmeBOt Class
@@ -14,7 +14,7 @@
 #ifndef _H_TRACKER_H_
 #define _H_TRACKER_H_
 
-#include "Detector.hpp"
+#include "detector.hpp"
 
 namespace acmebot {
 class Tracker {

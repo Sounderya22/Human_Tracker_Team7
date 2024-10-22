@@ -1,8 +1,8 @@
 # Declare the library target first
 add_library(AcmeBot
-    AcmeBot.cpp
-    Detector.cpp
-    Tracker.cpp
+        acmebot.cpp
+        detector.cpp
+        tracker.cpp
 )
 
 # Specify the include directory

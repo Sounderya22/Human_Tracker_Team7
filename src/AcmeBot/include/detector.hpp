@@ -1,5 +1,5 @@
 /**
- * @file AcmeBot.hpp
+ * @file acmebot.hpp
  * @author  Amogha Sunil
  * @brief C++ header file for AcmeBOt Class
  * @version 0.1
