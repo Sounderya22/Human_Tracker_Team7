@@ -1,5 +1,6 @@
 #include <iostream>
+#include "Detector.hpp"
 
 int main() {
-  return 0;
+
 }

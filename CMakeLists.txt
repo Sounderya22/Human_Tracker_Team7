@@ -101,6 +101,7 @@ endif()
 # ref: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
 #
 add_subdirectory(src)
+add_subdirectory(app)
 add_subdirectory(test)
 
 # create a target to build documentation

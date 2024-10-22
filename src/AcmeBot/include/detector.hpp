@@ -12,6 +12,11 @@
  #ifndef _H_DETECTER_H_
  #define _H_DETECTER_H_
 
+ #include <iostream>
+ #include <opencv2/opencv.hpp>
+ #include <opencv2/core.hpp>
+ #include <opencv2/highgui.hpp>
+
  namespace acmebot {
  class Detector {
     public:
