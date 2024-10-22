@@ -10,12 +10,15 @@ add_executable(human_tracker
 target_include_directories(human_tracker PUBLIC
   # list inclue directories:
   ${CMAKE_SOURCE_DIR}/include
+  ${ACMEBOT_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 # Any dependent libraires needed to build this target.
-target_link_libraries(human_tracker PUBLIC -static
+target_link_libraries(human_tracker PUBLIC
   # list of libraries
-  Human_Tracker_Team7_lib
+  # Human_Tracker_Team7_lib
+  Human_Tracker
   )
 
   

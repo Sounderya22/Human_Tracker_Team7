@@ -1,5 +1,6 @@
 #include "Detector.hpp" 
 
+
 /**
  * @brief Constructor for Detector class
  * 
@@ -21,6 +22,7 @@ acmebot::Detector::~Detector() {
  * 
  */
 void acmebot::Detector::cameraCapture() {
+   
 
 }
  /**
