@@ -22,6 +22,15 @@ FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
 )
+
+FetchContent_Declare(
+        readerwriterqueue
+        GIT_REPOSITORY    https://github.com/cameron314/readerwriterqueue
+        GIT_TAG           master
+)
+
+FetchContent_MakeAvailable(readerwriterqueue)
+
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
@@ -100,9 +109,9 @@ endif()
 # ref: https://iamsorush.com/posts/cpp-cmake-essential/
 # ref: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
 #
-add_subdirectory(src)
 add_subdirectory(app)
-add_subdirectory(test)
+add_subdirectory(src)
+#add_subdirectory(test)
 
 # create a target to build documentation
 doxygen_add_docs(docs           # target name
