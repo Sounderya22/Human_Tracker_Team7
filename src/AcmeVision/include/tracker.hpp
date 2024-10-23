@@ -34,7 +34,7 @@ class Tracker {
 
     private:
         /*detector object*/
-        acmebot::Detector mDetector; 
+        // acmebot::Detector mDetector;
        
 };
 } //namespace

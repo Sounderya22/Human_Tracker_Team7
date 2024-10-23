@@ -4,7 +4,7 @@
  * @brief Constructor for the Tracker class
  * 
  */
-acmebot::tracker::tracker() {
+acmebot::Tracker::Tracker() {
 
 }
 
@@ -12,7 +12,7 @@ acmebot::tracker::tracker() {
  * @brief Destructor for the Tracker class
  * 
  */
-acmebot::tracker::~tracker() {
+acmebot::Tracker::~Tracker() {
 
 }
 
@@ -20,7 +20,7 @@ acmebot::tracker::~tracker() {
  * @brief Takes frame-wise detections to track humans
  * 
  */
-void acmebot::tracker::Process() {
+void acmebot::Tracker::Process() {
 
 }
 
@@ -28,6 +28,6 @@ void acmebot::tracker::Process() {
  * @brief Sets parameters that are private to class
  * 
  */
-void acmebot::tracker::setParameters() {
+void acmebot::Tracker::setParameters() {
 
 }
