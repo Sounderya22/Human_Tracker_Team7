@@ -39,7 +39,8 @@ bool acmebot::AcmeVision::initCamera() {
     /// Path for testing on a video; comment this line if using webcam
     // auto path = "..//data//test.mov";
     cap_.open(path);
-
+    cap_.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
+    cap_.set(cv::CAP_PROP_FRAME_WIDTH, 640);
     /// check if camera is open
     if ( cap_.isOpened() ) {
         /// set srouce frame width

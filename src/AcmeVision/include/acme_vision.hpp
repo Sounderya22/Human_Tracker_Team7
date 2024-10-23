@@ -13,7 +13,6 @@
 
 #ifndef _H_ACMEBOT_H_
 #define _H_ACMEBOT_H_
-
 #include <future>
 #include "Utils.hpp"
 #include "tracker.hpp"
