@@ -75,6 +75,8 @@ OpenCV >= 4.5.0 is licensed under the Apache 2 License.
   cmake  ../opencv-4.x
   # Build
   cmake --build .
+
+  
 # Download the source code:
   git clone https://github.com/Sounderya22/Human_Tracker_Team7
   cd Human_Tracker_Team7

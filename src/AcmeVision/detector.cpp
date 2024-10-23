@@ -1,6 +1,8 @@
 #include "detector.hpp"
 
 #include <acme_vision.hpp>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/dnn/dnn.hpp>
 #include <utility>
 
 
@@ -25,11 +27,22 @@ acmebot::Detector::~Detector() {
  * @brief Captures frames from real-time camera feed or series of images
  * 
  */
+ void acmebot::Detector::loadModel(std::string modelPath, std::string configPath){
+    mModelPath = modelPath;
+    mConfigPath = configPath;
+ }
+
+/**
+ * @brief Captures frames from real-time camera feed or series of images
+ * 
+ */
 bool acmebot::Detector::Inference() {
     // pop one from mFrameQueue and inference
     // push result to mDetectedObjectqueue
-
+    std::vector<cv::Rect> detectedFaces;
     cv::Mat frame;
+    loadModel("/models/res10_300x300_ssd_iter_140000_fp16.caffemodel","models/deploy.protext");
+
     cv::namedWindow("test", cv::WINDOW_NORMAL);
     while (true) {
         spdlog::info(frames->size_approx());
@@ -37,7 +50,7 @@ bool acmebot::Detector::Inference() {
             spdlog::info("Empty frame");
             continue;
         };
-
+        Process(frame,detectedFaces);
         cv::imshow("test", frame);
         char k = cv::waitKey(1);
         if (k == 27 || k == 'q') {
@@ -50,5 +63,30 @@ bool acmebot::Detector::Inference() {
  * @brief Performs detection and outputs bounding box
  *
  */
-void acmebot::Detector::Process() {
+ void acmebot::Detector::Process(cv::Mat &frame,std::vector<cv::Rect> &detectedFaces) {
+  cv::dnn::Net faceDetectNet;  ///< face detection model from dnn opencv lib
+//   cv::dnn::Net faceDetectionModel;  ///< Deep learning face detection model.
+  faceDetectNet = cv::dnn::readNet(mModelPath, mConfigPath);
+  cv::Mat blob = cv::dnn::blobFromImage(frame, 1.0, cv::Size(300, 300),
+                                        cv::Scalar(104, 117, 123));
+  faceDetectNet.setInput(blob);
+  cv::Mat detections = faceDetectNet.forward();
+
+  cv::Mat detectionMat(detections.size[2], detections.size[3], CV_32F,
+                           detections.ptr<float>());
+
+  for (int rows = 0; rows < detectionMat.rows; rows++) {
+    float conf = detectionMat.at<float>(rows, 2);
+    if (conf > mConfThres) {
+      int x1 = static_cast<int>(detectionMat.at<float>(rows, 3) * frame.cols);
+      int y1 = static_cast<int>(detectionMat.at<float>(rows, 4) * frame.rows);
+      int x2 = static_cast<int>(detectionMat.at<float>(rows, 5) * frame.cols);
+      int y2 = static_cast<int>(detectionMat.at<float>(rows, 6) * frame.rows);
+
+     cv::Rect faces(x1, y1, x2 - x1, y2 - y1);
+
+      // output detected face coordinates 
+      detectedFaces.push_back(faces);
+    }
+  }
 }

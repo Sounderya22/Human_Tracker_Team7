@@ -14,6 +14,7 @@
 
 #include <future>
  #include <iostream>
+#include <opencv2/core/mat.hpp>
  #include <opencv2/opencv.hpp>
  #include <opencv2/core.hpp>
  #include <opencv2/highgui.hpp>
@@ -25,6 +26,13 @@
     public:
         explicit Detector(std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat>> mqueue);
         ~Detector();
+
+        /**
+         * @brief load dnn model and network
+         * 
+         */
+        void loadModel(std::string modelPath, std::string configPath);
+
         /**
          * @brief Captures frames from real-time camera feed or series of images
          * 
@@ -34,12 +42,14 @@
          * @brief Performs detection and outputs bounding box
          * 
          */
-        void Process();
+        void Process(cv::Mat &frame,std::vector<cv::Rect> &detectedFaces);
 
     private: 
         /* Prediction confidence*/
         std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat>> frames;
-        double mConfidenceThreshold{0.0}; 
+        std::string mModelPath;  //path to dnn model 
+        std::string mConfigPath; //path to dnn config
+        double mConfThres{0.3}; 
         std::future<bool> mVisionToDetector;
 };
 }  //namespace
