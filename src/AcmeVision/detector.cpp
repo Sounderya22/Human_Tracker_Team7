@@ -72,12 +72,12 @@ bool acmebot::Detector::Inference() {
 
   //create from for the current frame.
   cv::Mat blob = cv::dnn::blobFromImage(frame, 1.0, cv::Size(640, 480),
-                                        cv::Scalar(104, 117, 123));
+                                        cv::Scalar(98, 125, 133));
   faceDetectNet.setInput(blob);
 
   //forward pass of the network
   cv::Mat detections = faceDetectNet.forward();
-
+    
   cv::Mat detectionMat(detections.size[2], detections.size[3], CV_32F,
                            detections.ptr<float>());
 
@@ -90,7 +90,7 @@ bool acmebot::Detector::Inference() {
       int y2 = static_cast<int>(detectionMat.at<float>(rows, 6) * frame.rows);
 
       cv::Rect faces(x1, y1, x2 - x1, y2 - y1);
-      cv::rectangle(frame, faces, cv::Scalar(0, 255, 0),2, 4);
+      cv::rectangle(frame, faces, cv::Scalar(0, 255, 0),1, 4);
       // output detected face coordinates 
       detectedFaces.push_back(faces);
     }
