@@ -111,7 +111,7 @@ endif()
 #
 add_subdirectory(app)
 add_subdirectory(src)
-#add_subdirectory(test)
+add_subdirectory(test)
 
 # create a target to build documentation
 doxygen_add_docs(docs           # target name

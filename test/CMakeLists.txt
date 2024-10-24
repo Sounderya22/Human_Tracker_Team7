@@ -11,7 +11,7 @@ add_executable(humanBot_test
 target_include_directories(humanBot_test PUBLIC
         # list of include directories:
         ./
-        ${CMAKE_SOURCE_DIR}/src/AcmeBot/include/
+        ${CMAKE_SOURCE_DIR}/src/AcmeVision/include/
 )
 
 # Any dependent libraires needed to build this target.
@@ -20,7 +20,7 @@ target_link_libraries(humanBot_test PUBLIC
         gtest
         gmock
         spdlog::spdlog
-        AcmeBot
+        AcmeVisionLib
 )
 
 # Enable CMake’s test runner to discover the tests included in the

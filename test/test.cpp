@@ -5,7 +5,7 @@
 #include <spdlog/spdlog.h>
 #include <memory>
 
-#include "AcmeBot.hpp"
+#include "acme_vision.hpp"
 
 using testing::_;
 using testing::Return;
@@ -16,9 +16,10 @@ public:
   GMockTests (
     ) {
     spdlog::set_pattern("[%H:%M:%S %z] [%n] [%^---%L---%$] [thread %t] %v");
-    bot = std::make_shared<acmebot::AcmeBot>();
-    detector = std::make_shared<acmebot::Detector>();
-    tracker = std::make_shared<acmebot::Tracker>();
+
+    // bot = std::make_shared<acmebot::AcmeVision>(0);
+    // detector = std::make_shared<acmebot::Detector>();
+    // tracker = std::make_shared<acmebot::Tracker>();
 
   };
 
@@ -31,7 +32,7 @@ protected:
     spdlog::info("Calling Fixture TearDown");
   };
 
-  std::shared_ptr<acmebot::AcmeBot> bot;
+  std::shared_ptr<acmebot::AcmeVision> bot;
   std::shared_ptr<acmebot::Detector> detector;
   std::shared_ptr<acmebot::Tracker> tracker;
 
