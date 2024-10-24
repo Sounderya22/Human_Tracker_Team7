@@ -36,7 +36,7 @@ well optimized.
 ## UML Diagram - Phase 1
 Class dependency diagram of the proposed design
 
-![image](https://github.com/Sounderya22/Human_Tracker_Team7/blob/main//UML/Phase0/UML_diagram.jpeg)
+![image](https://github.com/Sounderya22/Human_Tracker_Team7/blob/main//UML/Phase1/UML_diagram.jpeg)
 
 ## Activity Diagram
 
