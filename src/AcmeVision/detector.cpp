@@ -2,7 +2,9 @@
 
 #include <acme_vision.hpp>
 #include <opencv2/core/mat.hpp>
+#include <opencv2/core/types.hpp>
 #include <opencv2/dnn/dnn.hpp>
+#include <opencv2/imgproc.hpp>
 #include <utility>
 
 
@@ -41,7 +43,8 @@ bool acmebot::Detector::Inference() {
     // push result to mDetectedObjectqueue
     std::vector<cv::Rect> detectedFaces;
     cv::Mat frame;
-    loadModel("/models/res10_300x300_ssd_iter_140000_fp16.caffemodel","models/deploy.protext");
+
+    loadModel("/home/amogha/ENPM700/midtermProject/Human_Tracker_Team7/models/res10_300x300_ssd_iter_140000_fp16.caffemodel","/home/amogha/ENPM700/midtermProject/Human_Tracker_Team7/models/deploy.protext");
 
     cv::namedWindow("test", cv::WINDOW_NORMAL);
     while (true) {
@@ -65,11 +68,14 @@ bool acmebot::Detector::Inference() {
  */
  void acmebot::Detector::Process(cv::Mat &frame,std::vector<cv::Rect> &detectedFaces) {
   cv::dnn::Net faceDetectNet;  ///< face detection model from dnn opencv lib
-//   cv::dnn::Net faceDetectionModel;  ///< Deep learning face detection model.
   faceDetectNet = cv::dnn::readNet(mModelPath, mConfigPath);
-  cv::Mat blob = cv::dnn::blobFromImage(frame, 1.0, cv::Size(300, 300),
+
+  //create from for the current frame.
+  cv::Mat blob = cv::dnn::blobFromImage(frame, 1.0, cv::Size(640, 480),
                                         cv::Scalar(104, 117, 123));
   faceDetectNet.setInput(blob);
+
+  //forward pass of the network
   cv::Mat detections = faceDetectNet.forward();
 
   cv::Mat detectionMat(detections.size[2], detections.size[3], CV_32F,
@@ -83,8 +89,8 @@ bool acmebot::Detector::Inference() {
       int x2 = static_cast<int>(detectionMat.at<float>(rows, 5) * frame.cols);
       int y2 = static_cast<int>(detectionMat.at<float>(rows, 6) * frame.rows);
 
-     cv::Rect faces(x1, y1, x2 - x1, y2 - y1);
-
+      cv::Rect faces(x1, y1, x2 - x1, y2 - y1);
+      cv::rectangle(frame, faces, cv::Scalar(0, 255, 0),2, 4);
       // output detected face coordinates 
       detectedFaces.push_back(faces);
     }
