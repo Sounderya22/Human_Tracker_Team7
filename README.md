@@ -2,7 +2,7 @@
 ![CICD Workflow status](https://github.com/Sounderya22/Human_Tracker_Team7/actions/workflows/run-unit-test-and-upload-codecov.yml/badge.svg) [![codecov](https://codecov.io/gh/Sounderya22/Human_Tracker_Team7/branch/main/graph/badge.svg)](https://codecov.io/gh/Sounderya22/Human_Tracker_Team7) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 
-A C++ module for Human Obstacle Detection and Tracking using YOLOv8.
+A C++17 module for Human Obstacle Detection and Tracking using YOLOv8. The module outputs in the robot's base frame. 
 
 ## Project Contributors
 [Sounderya Varagur Venugopal](https://github.com/Sounderya22), Driver
