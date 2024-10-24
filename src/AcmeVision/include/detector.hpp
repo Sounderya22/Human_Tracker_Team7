@@ -13,7 +13,6 @@
  #define _H_DETECTER_H_
 
 #include <future>
- #include <iostream>
 #include <opencv2/core/mat.hpp>
  #include <opencv2/opencv.hpp>
  #include <opencv2/core.hpp>
