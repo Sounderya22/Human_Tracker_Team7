@@ -36,6 +36,10 @@ jobs:
     steps:
       # We want to use GitHub CI checkout version 3 to check out our branch
       - uses: actions/checkout@v3
+      - uses: Dovyski/setup-opencv-action@v1.1
+        with:
+          opencv-version: 4.0.0
+          ENABLE_PRECOMPILED_HEADERS: OFF
 
       # Install some system pacakges
       - name: Install build packages
@@ -45,7 +49,7 @@ jobs:
           sudo apt install -y doxygen lcov gcovr
 
       # Build, run unit test, and generate coverage report
-      - name: Configure CMake flags and build exectables
+      - name: Configure CMake flags and build executables
         run: |
           cmake -D WANT_COVERAGE=ON -D CMAKE_BUILD_TYPE=Debug -S ./ -B build/
           cmake --build build/ --clean-first --target all test_coverage
