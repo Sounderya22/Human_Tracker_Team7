@@ -19,7 +19,7 @@
 
 int main(){
     std::unique_ptr<acmebot::AcmeVision> acmevision = std::make_unique<acmebot::AcmeVision>(0);
-    acmevision->windowControl.showRawStream = false;
+    acmevision->windowControl.showRawStream = true;
 
 
   acmevision->ProcessCameraFrame();

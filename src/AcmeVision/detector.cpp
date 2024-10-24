@@ -29,10 +29,10 @@ acmebot::Detector::~Detector() {
  * @brief Captures frames from real-time camera feed or series of images
  * 
  */
- void acmebot::Detector::loadModel(std::string modelPath, std::string configPath){
+void acmebot::Detector::loadModel(std::string modelPath, std::string configPath) {
     mModelPath = modelPath;
     mConfigPath = configPath;
- }
+}
 
 /**
  * @brief Captures frames from real-time camera feed or series of images
@@ -44,7 +44,7 @@ bool acmebot::Detector::Inference() {
     std::vector<cv::Rect> detectedFaces;
     cv::Mat frame;
 
-    loadModel("/home/amogha/ENPM700/midtermProject/Human_Tracker_Team7/models/res10_300x300_ssd_iter_140000_fp16.caffemodel","/home/amogha/ENPM700/midtermProject/Human_Tracker_Team7/models/deploy.protext");
+    loadModel("../../models/res10_300x300_ssd_iter_140000_fp16.caffemodel", "../../models/deploy.protext");
 
     cv::namedWindow("test", cv::WINDOW_NORMAL);
     while (true) {
@@ -53,7 +53,7 @@ bool acmebot::Detector::Inference() {
             spdlog::info("Empty frame");
             continue;
         };
-        Process(frame,detectedFaces);
+        Process(frame, detectedFaces);
         cv::imshow("test", frame);
         char k = cv::waitKey(1);
         if (k == 27 || k == 'q') {
@@ -66,33 +66,33 @@ bool acmebot::Detector::Inference() {
  * @brief Performs detection and outputs bounding box
  *
  */
- void acmebot::Detector::Process(cv::Mat &frame,std::vector<cv::Rect> &detectedFaces) {
-  cv::dnn::Net faceDetectNet;  ///< face detection model from dnn opencv lib
-  faceDetectNet = cv::dnn::readNet(mModelPath, mConfigPath);
+void acmebot::Detector::Process(cv::Mat &frame, std::vector<cv::Rect> &detectedFaces) {
+    cv::dnn::Net faceDetectNet; ///< face detection model from dnn opencv lib
+    faceDetectNet = cv::dnn::readNet(mModelPath, mConfigPath);
 
-  //create from for the current frame.
-  cv::Mat blob = cv::dnn::blobFromImage(frame, 1.0, cv::Size(640, 480),
-                                        cv::Scalar(98, 125, 133));
-  faceDetectNet.setInput(blob);
+    //create from for the current frame.
+    cv::Mat blob = cv::dnn::blobFromImage(frame, 1.0, cv::Size(640, 480),
+                                          cv::Scalar(98, 125, 133));
+    faceDetectNet.setInput(blob);
 
-  //forward pass of the network
-  cv::Mat detections = faceDetectNet.forward();
-    
-  cv::Mat detectionMat(detections.size[2], detections.size[3], CV_32F,
-                           detections.ptr<float>());
+    //forward pass of the network
+    cv::Mat detections = faceDetectNet.forward();
 
-  for (int rows = 0; rows < detectionMat.rows; rows++) {
-    float conf = detectionMat.at<float>(rows, 2);
-    if (conf > mConfThres) {
-      int x1 = static_cast<int>(detectionMat.at<float>(rows, 3) * frame.cols);
-      int y1 = static_cast<int>(detectionMat.at<float>(rows, 4) * frame.rows);
-      int x2 = static_cast<int>(detectionMat.at<float>(rows, 5) * frame.cols);
-      int y2 = static_cast<int>(detectionMat.at<float>(rows, 6) * frame.rows);
+    cv::Mat detectionMat(detections.size[2], detections.size[3], CV_32F,
+                         detections.ptr<float>());
 
-      cv::Rect faces(x1, y1, x2 - x1, y2 - y1);
-      cv::rectangle(frame, faces, cv::Scalar(0, 255, 0),1, 4);
-      // output detected face coordinates 
-      detectedFaces.push_back(faces);
+    for (int rows = 0; rows < detectionMat.rows; rows++) {
+        float conf = detectionMat.at<float>(rows, 2);
+        if (conf > mConfThres) {
+            int x1 = static_cast<int>(detectionMat.at<float>(rows, 3) * frame.cols);
+            int y1 = static_cast<int>(detectionMat.at<float>(rows, 4) * frame.rows);
+            int x2 = static_cast<int>(detectionMat.at<float>(rows, 5) * frame.cols);
+            int y2 = static_cast<int>(detectionMat.at<float>(rows, 6) * frame.rows);
+
+            cv::Rect faces(x1, y1, x2 - x1, y2 - y1);
+            cv::rectangle(frame, faces, cv::Scalar(0, 255, 0), 1, 4);
+            // output detected face coordinates
+            detectedFaces.push_back(faces);
+        }
     }
-  }
 }
