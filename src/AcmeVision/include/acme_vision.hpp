@@ -22,11 +22,32 @@
 #include <utility>
 #include <vector>
 #include <spdlog/spdlog.h>
+#include <eigen3/Eigen/Eigen>
 
 struct intrinsics {
     double focalLength{0.0};
 };
 
+/**
+ * @brief Calls tracker class to retreive trackpoints of detections and calculates 3D coordinates
+ * @startuml
+ * @startuml
+    : start
+    : Initialize Camera;
+    : Capture Frame;
+        repeat
+            : Process Frame;
+            : Detect Humans;
+            if (Humans Detected?) then (yes)
+                : Track Humans;
+                : Transform Coordinates;
+            else (no)
+                : No Action;
+            endif
+        repeat while (More Frames?)
+    : stop
+ * @enduml
+ */
 namespace acmebot {
     /**
     * @brief Pose of human in Robot frame
@@ -65,7 +86,10 @@ namespace acmebot {
     struct VisualControl {
         bool showRawStream;
         bool showProcessedStream;
-        VisualControl(bool sRawStream, bool sProcessedStream): showRawStream(sRawStream), showProcessedStream(sProcessedStream) {};
+
+        VisualControl(bool sRawStream, bool sProcessedStream): showRawStream(sRawStream),
+                                                               showProcessedStream(sProcessedStream) {
+        };
     };
 
     class AcmeVision {
@@ -76,22 +100,50 @@ namespace acmebot {
         /*OpenCV video capture*/
         int mCapture{0};
 
-        std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat>> mFrameQueue;
+        std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat> > mFrameQueue;
         // std::shared_ptr<moodycamel::ReaderWriterQueue<acmebot::DetectedObject>> mDetectedObjectQueue;
-        // std::future<bool> mDetectorToTracker;
+        std::shared_ptr<moodycamel::ReaderWriterQueue<acmebot::Pose>> mOutputQueue;
         cv::VideoCapture cap_;
         cv::Mat p_frame_;
         cv::Size p_size_;
-        int frame_width_;
-        int frame_height_;
-        int frame_rate_;
-        uint8_t mcameraId_;
+        int frame_width_{};
+        int frame_height_{};
+        int frame_rate_{};
+        double mFocalLength{};
+        uint8_t mcameraId_{};
+        double mcFactor_{};
+        double mavgHumanHeight_{};
+        int raw_width{};
+        int raw_height{};
         bool initCamera();
+        bool initTestData();
+        acmebot::Pose mrobotPose;
+        acmebot::Pose mcamPose;
+        int mcalib_{};
 
         std::unique_ptr<Detector> mDetector;
         std::unique_ptr<Tracker> mTracker;
 
     public:
+        /**
+        * @brief Function to set robot pose
+        * Used in calculating final transforms
+        */
+        bool SetRobotPose(const Pose &robo_pose);
+
+        /**
+        * @brief Function to set camera pose
+        * Used in calculating final transforms
+        */
+        bool SetCameraPose(const Pose &cam_pose);
+        /**
+        * @brief Function to set capture frame size
+        * @param w width of capture frame
+        * @param h height of capture frame
+        * @return True if operation is success else False
+        */
+        bool SetProcessingSize(int w, int h);
+
         /**
         * @brief
         */
@@ -99,13 +151,20 @@ namespace acmebot {
         /**
         * @brief Shared queue containing all the poses.
         */
-        std::shared_ptr<moodycamel::ReaderWriterQueue<acmebot::HumanPoses>> mPoseQueue;
+        std::shared_ptr<moodycamel::ReaderWriterQueue<acmebot::HumanPoses> > mPoseQueue;
 
         /**
          * @brief Constructs a new Acme Vision object
          * 
          */
-        AcmeVision(const int8_t camId);
+        explicit AcmeVision(int8_t camId);
+
+        /**
+         * @brief Constructs a new Acme Vision object with specified file path
+         * file can be in form of video/ image
+         *
+         */
+        explicit AcmeVision(std::string filePath);
 
         /**
          * @brief Destructor for the Acme Bot class
@@ -121,16 +180,23 @@ namespace acmebot {
         void ProcessCameraFrame();
 
         /**
-        * @brief Sets required intrinsics for transformations
-        * 
+        * @brief Calculate the Intrinsics of camera
+        * Intrinsics are required to correctly map human from pixels to robot frame
         */
         void setIntrinsics();
+
+        /**
+        * @brief Set the Focal Length of the camera
+        *
+        * @param focal_length
+        */
+        void SetFocalLength(double focal_length);
 
         /**
         * @brief Converts points from camera's reference frame to robot frame
         * 
         */
-        void transformPoints();
+        void transformPoints(const std::vector<cv::Rect> &tracks);
     };
 } //namespace
 

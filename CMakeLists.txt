@@ -109,6 +109,7 @@ endif()
 # ref: https://iamsorush.com/posts/cpp-cmake-essential/
 # ref: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
 #
+file(COPY data DESTINATION ${PROJECT_BINARY_DIR})
 add_subdirectory(app)
 add_subdirectory(src)
 add_subdirectory(test)

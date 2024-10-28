@@ -20,7 +20,7 @@ struct Pose{
         Pose() {
                 x = -1.0;
                 y = -1.0;
-                z = -1.0;
+                theta = -1.0;
         }
 
         /**
@@ -33,11 +33,11 @@ struct Pose{
         Pose(double x1, double y1, double z1) {
                 x = x1;
                 y = y1;
-                z = z1;
+                theta = z1;
         }
         double x;
         double y;
-        double z;
+        double theta;
 };
 
 /**
