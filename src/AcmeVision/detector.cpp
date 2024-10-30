@@ -12,10 +12,11 @@
  * @brief Constructor for Detector class
  * 
  */
-acmebot::Detector::Detector(
-    std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat> > mqueue): frames(std::move(mqueue)) {
+acmebot::Detector::Detector()
+    // std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat> > mqueue): frames(std::move(mqueue))
+     {
     spdlog::set_pattern("[%H:%M:%S %z] [%n] [%^---%L---%$] [thread %t] %v");
-    mVisionToDetector = std::async(std::launch::async, &acmebot::Detector::Inference, this);
+    // mVisionToDetector = std::async(std::launch::async, &acmebot::Detector::Inference, this);
 }
 
 /**
@@ -41,25 +42,25 @@ void acmebot::Detector::loadModel(std::string modelPath, std::string configPath)
 bool acmebot::Detector::Inference() {
     // pop one from mFrameQueue and inference
     // push result to mDetectedObjectqueue
-    std::vector<cv::Rect> detectedFaces;
-    cv::Mat frame;
+    // std::vector<cv::Rect> detectedFaces;
+    // cv::Mat frame;
 
-    loadModel("../../models/res10_300x300_ssd_iter_140000_fp16.caffemodel", "../../models/deploy.protext");
+    // loadModel("/home/amogha/ENPM700/midtermProject/Human_Tracker_Team7/models/res10_300x300_ssd_iter_140000_fp16.caffemodel", "/home/amogha/ENPM700/midtermProject/Human_Tracker_Team7/models/deploy.protext");
 
-    cv::namedWindow("test", cv::WINDOW_NORMAL);
-    while (true) {
-        spdlog::info(frames->size_approx());
-        if (!frames->try_dequeue(frame)) {
-            spdlog::info("Empty frame");
-            continue;
-        };
-        Process(frame, detectedFaces);
-        cv::imshow("test", frame);
-        char k = cv::waitKey(1);
-        if (k == 27 || k == 'q') {
-            return false;
-        }
-    }
+    // cv::namedWindow("test", cv::WINDOW_NORMAL);
+    // while (true) {
+    //     spdlog::info(frames->size_approx());
+    //     if (!frames->try_dequeue(frame)) {
+    //         spdlog::info("Empty frame");
+    //         continue;
+    //     };
+    //     Process(frame, detectedFaces);
+    //     cv::imshow("test", frame);
+    //     char k = cv::waitKey(1);
+    //     if (k == 27 || k == 'q') {
+    //         return false;
+    //     }
+    // }
 }
 
 /**
@@ -67,11 +68,13 @@ bool acmebot::Detector::Inference() {
  *
  */
 void acmebot::Detector::Process(cv::Mat &frame, std::vector<cv::Rect> &detectedFaces) {
+    loadModel("/home/sound/ENPM700/Human_Tracker_Team7/models/res10_300x300_ssd_iter_140000_fp16.caffemodel", "/home/sound/ENPM700/Human_Tracker_Team7/models/deploy.protext");
+
     cv::dnn::Net faceDetectNet; ///< face detection model from dnn opencv lib
     faceDetectNet = cv::dnn::readNet(mModelPath, mConfigPath);
 
     //create from for the current frame.
-    cv::Mat blob = cv::dnn::blobFromImage(frame, 1.0, cv::Size(640, 480),
+    cv::Mat blob = cv::dnn::blobFromImage(frame, 1.0, cv::Size(850, 850),
                                           cv::Scalar(98, 125, 133));
     faceDetectNet.setInput(blob);
 

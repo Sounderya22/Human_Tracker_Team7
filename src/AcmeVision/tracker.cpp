@@ -20,7 +20,7 @@ acmebot::Tracker::~Tracker() {
  * @brief Takes frame-wise detections to track humans
  * 
  */
-void acmebot::Tracker::Process() {
+void acmebot::Tracker::Process(cv::Mat &frame, std::vector<cv::Rect> &detectedFaces) {
 
 }
 

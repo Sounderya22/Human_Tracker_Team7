@@ -118,8 +118,9 @@ namespace acmebot {
         * 
         * 
         */
-        void ProcessCameraFrame();
+        void ProcessCameraFrame(cv::Mat &p_frame_);
 
+        void Process();
         /**
         * @brief Sets required intrinsics for transformations
         * 

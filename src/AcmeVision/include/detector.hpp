@@ -23,7 +23,7 @@
  namespace acmebot {
  class Detector {
     public:
-        explicit Detector(std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat>> mqueue);
+        explicit Detector();
         ~Detector();
 
         /**
@@ -45,11 +45,11 @@
 
     private: 
         /* Prediction confidence*/
-        std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat>> frames;
+        // std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat>> frames;
         std::string mModelPath;  //path to dnn model 
         std::string mConfigPath; //path to dnn config
         double mConfThres{0.3}; 
-        std::future<bool> mVisionToDetector;
+        // std::future<bool> mVisionToDetector;
 };
 }  //namespace
 #endif
