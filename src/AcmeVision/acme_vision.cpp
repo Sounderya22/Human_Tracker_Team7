@@ -104,7 +104,9 @@ void acmebot::AcmeVision::ProcessCameraFrame(cv::Mat &p_frame_) {
     //     cv::namedWindow(kWindowName);
     // }
 
-   cv::VideoCapture cap(0);
+    cv::VideoCapture cap(0);
+    cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
+    cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);
 //    p_size_ = cv::Size(850, 850);
    
     // Check if camera opened successfully
