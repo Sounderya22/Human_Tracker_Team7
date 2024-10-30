@@ -86,10 +86,13 @@ namespace acmebot {
         int frame_height_;
         int frame_rate_;
         uint8_t mcameraId_;
+        int calib_factor = 1;
         bool initCamera();
+        std::vector<cv::Rect> detectedFaces;
 
         std::unique_ptr<Detector> mDetector;
         std::unique_ptr<Tracker> mTracker;
+        std::unique_ptr<Utils> mUtils;
 
     public:
         /**

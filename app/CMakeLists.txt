@@ -13,6 +13,7 @@ target_include_directories(track PUBLIC
         ${CMAKE_SOURCE_DIR}/src/AcmeVision/include
         ${ACMEBOT_INCLUDE_DIRS}
         ${OpenCV_INCLUDE_DIRS}
+        ${EIGEN3_INCLUDE_DIR}
 )
 
 # Any dependent libraires needed to build this target.
