@@ -68,7 +68,8 @@ bool acmebot::Detector::Inference() {
  *
  */
 void acmebot::Detector::Process(cv::Mat &frame, std::vector<cv::Rect> &detectedFaces) {
-    loadModel("/home/sound/ENPM700/Human_Tracker_Team7/models/res10_300x300_ssd_iter_140000_fp16.caffemodel", "/home/sound/ENPM700/Human_Tracker_Team7/models/deploy.protext");
+
+    loadModel("../models/res10_300x300_ssd_iter_140000_fp16.caffemodel", "../models/deploy.protext");
 
     cv::dnn::Net faceDetectNet; ///< face detection model from dnn opencv lib
     faceDetectNet = cv::dnn::readNet(mModelPath, mConfigPath);

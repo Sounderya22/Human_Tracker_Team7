@@ -112,7 +112,8 @@ endif()
 add_subdirectory(app)
 add_subdirectory(src)
 add_subdirectory(test)
-
+#file(COPY data DESTINATION ${PROJECT_BINARY_DIR})
+file(COPY models DESTINATION ${PROJECT_BINARY_DIR})
 # create a target to build documentation
 doxygen_add_docs(docs           # target name
   # List of files or directories
