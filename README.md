@@ -139,6 +139,9 @@ Phase 1 of the project involved building the directory structure, writing the cl
 
 [<img src="https://github.com/Sounderya22/Human_Tracker_Team7/blob/main/docs/quad_chart.jpeg" width="50%">](https://drive.google.com/drive/folders/1mcVHQ7RUj1PIpepL2NkcWiuVDMI84d2H?usp=sharing)
 
+##Phase 2
+Demo video : https://drive.google.com/drive/folders/1lop80nWRA1V1QTcCeSz9dqJMdvqcP-kq?usp=drive_link
+
 ### References
 - [SSD Achitecture](https://towardsdatascience.com/understanding-ssd-multibox-real-time-object-detection-in-deep-learning-495ef744fab)
 - [Caffe](https://caffe.berkeleyvision.org/)
