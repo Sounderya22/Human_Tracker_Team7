@@ -17,5 +17,5 @@ target_include_directories(AcmeVisionLib PUBLIC
     ${EIGEN3_INCLUDE_DIRS}
 )
 
-target_link_libraries(AcmeVisionLib PUBLIC ${OpenCV_LIBS} readerwriterqueue spdlog::spdlog)
+target_link_libraries(AcmeVisionLib PUBLIC ${OpenCV_LIBS} spdlog::spdlog)
 

@@ -17,98 +17,39 @@
 #include <future>
 #include "Utils.hpp"
 #include "tracker.hpp"
-#include "detector.hpp"
-#include <readerwriterqueue.h>
 #include <utility>
 #include <vector>
 #include <spdlog/spdlog.h>
 
-struct intrinsics {
-    double focalLength{0.0};
-};
-
 namespace acmebot {
-    /**
-    * @brief Pose of human in Robot frame
-    */
-    struct HumanPose {
-        /**
-        * @brief X coordinate of the pose
-        */
-        double x;
-        /**
-        * @brief Y coordinate of the pose
-        */
-        double y;
-        /**
-        * @brief Z coordinate of the pose
-        */
-        double z;
-    };
 
-    /**
-    * @brief Collection of all human poses and additional information.
-    */
-    struct HumanPoses {
-        std::vector<HumanPose> poses;
-    };
-
-    /**
-    * @brief Collection of all data passed to tracker from detection class
-    * Structure passed to process via shared queue ( single producer single consumer )
-*/
-    struct DetectedObject {
-        // to be filled
-        int id;
-    };
-
-    struct VisualControl {
-        bool showRawStream;
-        bool showProcessedStream;
-        VisualControl(bool sRawStream, bool sProcessedStream): showRawStream(sRawStream), showProcessedStream(sProcessedStream) {};
-    };
-
-    class AcmeVision {
+class AcmeVision {
     private:
-        /* Camera parameters */
-        intrinsics mIntrinsics;
         int mFrameRate{0};
         /*OpenCV video capture*/
         int mCapture{0};
 
-        std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat>> mFrameQueue;
-        // std::shared_ptr<moodycamel::ReaderWriterQueue<acmebot::DetectedObject>> mDetectedObjectQueue;
-        // std::future<bool> mDetectorToTracker;
-        cv::VideoCapture cap_;
         cv::Mat p_frame_;
-        cv::Size p_size_;
-        int frame_width_;
-        int frame_height_;
-        int frame_rate_;
-        uint8_t mcameraId_;
         int calib_factor = 1;
-        bool initCamera();
-        std::vector<cv::Rect> detectedFaces;
 
-        std::unique_ptr<Detector> mDetector;
+        ///output from tracker method
+        std::vector<cv::Rect> mdetectedFaces;
+
+        ///robot reference frame poses
+        std::vector<acmebot::Pose> robotFPoses;
+        
+        ///tracker instance
         std::unique_ptr<Tracker> mTracker;
+
+        ///utils instance
         std::unique_ptr<Utils> mUtils;
 
     public:
         /**
-        * @brief
-        */
-        VisualControl windowControl;
-        /**
-        * @brief Shared queue containing all the poses.
-        */
-        std::shared_ptr<moodycamel::ReaderWriterQueue<acmebot::HumanPoses>> mPoseQueue;
-
-        /**
          * @brief Constructs a new Acme Vision object
          * 
          */
-        AcmeVision(const int8_t camId);
+        AcmeVision();
 
         /**
          * @brief Destructor for the Acme Bot class
@@ -117,24 +58,91 @@ namespace acmebot {
         ~AcmeVision();
 
         /**
-        * @brief Calls tracker class to retreive trackpoints of detections and calculates 3D coordinates
-        * 
-        * 
+        * @brief grabs the current frame data from live camera stream
+        *@startuml
+           :start
+           : actor User
+           : participant "VideoCapture" as Cap
+           : participant "Frame" as Frame
+           : User -> Cap: Create instance (cap(0))
+           : Cap -> Cap: set(CAP_PROP_FRAME_HEIGHT, 480)
+           : Cap -> Cap: set(CAP_PROP_FRAME_WIDTH, 640)
+           : Cap -> Cap: isOpened()
+             alt If Camera Opened
+               : Cap -> Cap: read(p_frame_)
+               : User -> Frame: Frame Captured
+            else If Camera Not Opened
+               : User -> User: Log Error("Cannot read frame")
+            end
+        * @enduml
         */
-        void ProcessCameraFrame(cv::Mat &p_frame_);
+        void ProcessCameraFrame();
 
-        void Process();
         /**
-        * @brief Sets required intrinsics for transformations
-        * 
+        * @brief Calls tracker class to retreive trackpoints of detections and calculates 3D coordinates
+        * @startuml
+            : start
+            :actor User
+            :participant "AcmeVision" as Vision
+            :participant "Camera" as Camera
+            :participant "Tracker" as Tracker
+            :participant "DetectedFaces" as DetectedFaces
+            :participant "RobotFPoses" as RobotFPoses
+            :participant "OpenCV" as OpenCV
+
+            :User -> Vision: Process()
+            :Vision -> Camera: ProcessCameraFrame()
+            :Vision -> Tracker: Process(p_frame_, mDetectedFaces)
+            :Tracker -> DetectedFaces: Update detected faces
+            :Vision -> Vision: transformPoints(robotFPoses)
+            :Vision -> OpenCV: imshow("acmeVision Process", p_frame_)
+            :OpenCV -> Vision: Display frame
+            :Vision -> OpenCV: waitKey(1)
+            :alt If key is ESC or 'q'
+                :Vision -> User: return
+            :end
+        * @enduml
         */
-        void setIntrinsics();
+        void Process();
 
         /**
         * @brief Converts points from camera's reference frame to robot frame
-        * 
+        * @startuml
+            :actor User
+            :participant "AcmeVision" as Vision
+            :participant "Utils" as Utils
+            :participant "Pose" as Pose
+            :participant "CameraFPoses" as CameraFPoses
+            :participant "RobotFPoses" as RobotFPoses
+            :participant "Matrix4d" as TransformMatrix
+
+            :User -> Vision: transformPoints(robotFPoses)
+
+            :Vision -> CameraFPoses: Initialize()
+            :alt For each detected face
+                :loop mdetectedFaces
+                    :Vision -> Utils: PixelsToPose(face, calib_factor)
+                    :Utils -> Pose: Create pose
+                    :Vision -> Vision: Calculate human_scaling_factor
+                    :Vision -> Pose: Scale pose.y and pose.z
+                    :Vision -> CameraFPoses: emplace_back(scaled_pose)
+                :end loop
+            :end
+
+            :Vision -> TransformMatrix: Initialize camera_to_robot_tmatrix
+            :TransformMatrix -> Vision: Set matrix values
+
+            :alt For each camera pose
+                :loop cameraFPoses
+                    :Vision -> Pose: Create cam_pose_homogeneous
+                    :Vision -> TransformMatrix: Multiply with camera_to_robot_tmatrix
+                    :TransformMatrix -> Pose: Create robot_pose_homogeneous
+                    :Vision -> RobotFPoses: emplace_back(robot_pose)
+                :end loop
+            :end
+        *@enduml
         */
-        void transformPoints();
+        void transformPoints(std::vector<acmebot::Pose> &robotFPoses);
     };
 } //namespace
 

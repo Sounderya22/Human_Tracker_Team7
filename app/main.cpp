@@ -1,9 +1,3 @@
-// #include <readerwriterqueue.h>
-//
-// int main()
-// {
-//   moodycamel::ReaderWriterQueue<int> q(100);
-// }
 /**
  * @file  main.cpp
  * @authors Anirudh Swarankar, Amogha Sunil
@@ -18,8 +12,7 @@
 #include "acme_vision.hpp"
 
 int main(){
-    std::unique_ptr<acmebot::AcmeVision> acmevision = std::make_unique<acmebot::AcmeVision>(0);
-    // acmevision->windowControl.showRawStream = true;
+    std::unique_ptr<acmebot::AcmeVision> acmevision = std::make_unique<acmebot::AcmeVision>();
   
   while(true){
     

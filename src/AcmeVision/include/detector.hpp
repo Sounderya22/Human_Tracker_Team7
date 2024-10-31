@@ -14,16 +14,24 @@
 
 #include <future>
 #include <opencv2/core/mat.hpp>
- #include <opencv2/opencv.hpp>
- #include <opencv2/core.hpp>
- #include <opencv2/highgui.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
 #include <spdlog/spdlog.h>
-#include <readerwriterqueue.h>
 
  namespace acmebot {
  class Detector {
     public:
-        explicit Detector();
+        /**
+        * @brief Constructor for the Detector class
+        * 
+        */
+         Detector();
+
+        /**
+        * @brief Destructor for the Detector class
+        * 
+        */
         ~Detector();
 
         /**
@@ -40,16 +48,46 @@
         /**
          * @brief Performs detection and outputs bounding box
          * 
+         *@startuml
+            :start
+            :actor User
+            :participant "Detector" as Detector
+            :participant "Net" as FaceDetectNet
+            :participant "Frame" as Frame
+            :participant "Detections" as Detections
+            :participant "DetectionMat" as DetectionMat
+
+            :User -> Detector: Process(frame, detectedFaces)
+            :Detector -> Detector: loadModel(modelPath, configPath)
+            :Detector -> FaceDetectNet: readNet(modelPath, configPath)
+            :Detector -> Frame: blobFromImage(frame, size, scalar)
+            :Detector -> FaceDetectNet: setInput(blob)
+            :Detector -> FaceDetectNet: forward()
+            :FaceDetectNet -> Detections: Get detections
+            :Detector -> DetectionMat: Create(detections)
+            :alt For each detection
+                :loop rows in DetectionMat
+                    :DetectionMat -> Detector: at(rows, 2) // confidence
+                    :alt If conf > mConfThres
+                        :DetectionMat -> Detector: at(rows, 3-6) // bounding box
+                        :Detector -> Frame: rectangle(faces)
+                        :Detector -> detectedFaces: push_back(faces)
+                    :end
+                :end loop
+            :end
+         * @enduml
          */
         void Process(cv::Mat &frame,std::vector<cv::Rect> &detectedFaces);
 
     private: 
-        /* Prediction confidence*/
-        // std::shared_ptr<moodycamel::ReaderWriterQueue<cv::Mat>> frames;
-        std::string mModelPath;  //path to dnn model 
-        std::string mConfigPath; //path to dnn config
+        /// path to dnn model 
+        std::string mModelPath;  
+
+        /// path to dnn config
+        std::string mConfigPath; 
+
+        ///confidence threshold
         double mConfThres{0.3}; 
-        // std::future<bool> mVisionToDetector;
 };
 }  //namespace
 #endif

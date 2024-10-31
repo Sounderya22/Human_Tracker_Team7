@@ -24,12 +24,10 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
-        readerwriterqueue
         GIT_REPOSITORY    https://github.com/cameron314/readerwriterqueue
         GIT_TAG           master
 )
 
-FetchContent_MakeAvailable(readerwriterqueue)
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
