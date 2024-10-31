@@ -14,7 +14,8 @@ message(STATUS ${ACMEBOT_INCLUDE_DIRS})
 target_include_directories(AcmeVisionLib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${OpenCV_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIRS}
 )
 
-target_link_libraries(AcmeVisionLib PUBLIC ${OpenCV_LIBS} readerwriterqueue spdlog::spdlog)
+target_link_libraries(AcmeVisionLib PUBLIC ${OpenCV_LIBS} spdlog::spdlog)
 

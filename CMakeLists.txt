@@ -24,12 +24,10 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
-        readerwriterqueue
         GIT_REPOSITORY    https://github.com/cameron314/readerwriterqueue
         GIT_TAG           master
 )
 
-FetchContent_MakeAvailable(readerwriterqueue)
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -112,7 +110,8 @@ endif()
 add_subdirectory(app)
 add_subdirectory(src)
 add_subdirectory(test)
-
+#file(COPY data DESTINATION ${PROJECT_BINARY_DIR})
+file(COPY models DESTINATION ${PROJECT_BINARY_DIR})
 # create a target to build documentation
 doxygen_add_docs(docs           # target name
   # List of files or directories

@@ -3,7 +3,7 @@
  * @file tracker.hpp
  * @author  Sounderya
             Amogha Sunil
- * @brief C++ header file for AcmeBOt Class
+ * @brief C++ header file for tracker Class
  * @version 0.1
  * @date 2024-10-16
  *
@@ -19,13 +19,24 @@
 namespace acmebot {
 class Tracker {
     public:
+        /**
+        * @brief Constructor for the Tracker class
+        * 
+        */
         Tracker();
+
+        /**
+        * @brief Destructor for the Tracker class
+        * 
+        */
         ~Tracker();
+
         /**
          * @brief Takes frame-wise detections to track humans
          * 
          */
-        void Process();
+        void Process(cv::Mat &frame, std::vector<cv::Rect> &detectedFaces);
+        
         /**
          * @brief Sets parameters that are private to class
          * 
@@ -33,9 +44,7 @@ class Tracker {
         void setParameters();
 
     private:
-        /*detector object*/
-        // acmebot::Detector mDetector;
-       
+        acmebot::Detector mDetector;
 };
 } //namespace
 
